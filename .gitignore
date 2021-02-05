@@ -1,0 +1,7 @@
+**/*.out
+3
+
+.DS_Store
+
+.idea
+.vscode
