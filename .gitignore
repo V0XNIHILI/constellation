@@ -1,5 +1,6 @@
 **/*.out
 3
+**/*.gch
 
 .DS_Store
 
