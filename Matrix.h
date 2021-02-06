@@ -100,17 +100,7 @@ namespace Constellation {
          * @param a Value to add to all matrix entries
          * @return Matrix
          */
-        Matrix<U> operator+(U const &a) const {
-            U *summedMatrixValues = new U[size];
-
-            for (int i = 0; i < size; i++) {
-                summedMatrixValues[i] = values[i] + a;
-            }
-
-            Matrix<U> c(width, height, summedMatrixValues, true);
-
-            return c;
-        }
+        Matrix<U> operator+(U const &a) const;
 
         /**
          * @brief Subtract one matrix from another
@@ -414,9 +404,9 @@ namespace Constellation {
                 int *matrixAValues = a.getValues();
 
                 for (int i = 0; i < size; i += 8) {
-                    __m256i first = _mm256_load_si256((__m256i * ) & values[0 + i]);
+                    __m256i first = _mm256_load_si256((__m256i * ) & values[i]);
 
-                    __m256i second = _mm256_load_si256((__m256i * ) & matrixAValues[0 + i]);
+                    __m256i second = _mm256_load_si256((__m256i * ) & matrixAValues[i]);
 
                     summedMatrixValues[i / 8] = _mm256_add_epi32(first, second);
                 }
@@ -431,6 +421,81 @@ namespace Constellation {
             throw std::invalid_argument("Widths of matrices to be added do not match");
         }
     }
+
+    template<typename U>
+    Matrix<U> Matrix<U>::operator+(U const &a) const {
+        U *summedMatrixValues = new U[size];
+
+        for (int i = 0; i < size; i++) {
+            summedMatrixValues[i] = values[i] + a;
+        }
+
+        Matrix<U> c(width, height, summedMatrixValues, true);
+
+        return c;
+    }
+
+    // 96 (3.5x) -128 (4x) - 256 (5.8x) - 512 (7.3x) - 1024 (7.8x) - 2048 (7.9x)
+    template<>
+    Matrix<int> Matrix<int>::operator+(int const &a) const {
+        int *summedMatrixValues = new int[size];
+
+        const __m256i first = _mm256_set1_epi32(a);
+
+        const int amountAligned = size - size % 8;
+
+        for (int i = 0; i < amountAligned; i += 8) {
+            __m256i second = _mm256_load_si256((__m256i * ) & values[i]);
+
+            __m256i result = _mm256_add_epi32(first, second);
+
+            _mm256_store_si256((__m256i * ) & summedMatrixValues[i], result);
+        }
+
+        // Add AVX/SSE
+
+        for (int i = amountAligned; i < size; ++i) {
+            summedMatrixValues[i] = values[i] + a;
+        }
+
+        Matrix<int> c(width, height, summedMatrixValues, true);
+
+        return c;
+    }
+
+//    /**
+//     * Add two matrices of floats, using AVX2. The performance benefit is most likely only noticeable for matrices
+//     * with a low amount of values.
+//     *
+//     * @param a Matrix to be added
+//     * @return Matrix<float>
+//     */
+//    template<>
+//    Matrix<float> Matrix<float>::operator+(Matrix<float> const &a) const {
+//        if (a.getWidth() == width) {
+//            if (a.getHeight() == height) {
+//                __m256 *summedMatrixValues = new __m256[size / 8];
+//
+//                float *matrixAValues = a.getValues();
+//
+//                for (int i = 0; i < size; i += 8) {
+//                    __m256 first = _mm256_load_ps((__m256 * ) & values[0 + i]);
+//
+//                    __m256 second = _mm256_load_ps((__m256 * ) & matrixAValues[0 + i]);
+//
+//                    summedMatrixValues[i / 8] = _mm256_add_ps(first, second);
+//                }
+//
+//                Matrix<float> c(width, height, (float *) summedMatrixValues, true);
+//
+//                return c;
+//            } else {
+//                throw std::invalid_argument("Heights of matrices to be added do not match");
+//            }
+//        } else {
+//            throw std::invalid_argument("Widths of matrices to be added do not match");
+//        }
+//    }
 
 //    template<typename U>
 //    std::ostream& operator<<(std::ostream &os, const Matrix<U> &a) {
