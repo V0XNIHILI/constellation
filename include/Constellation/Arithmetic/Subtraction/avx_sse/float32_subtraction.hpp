@@ -2,8 +2,6 @@
 // Created by Douwe den Blanken on 06/02/2021.
 //
 
-#include "Constellation/Matrix.h"
-
 // If the code is compiled with AVX2
 #ifdef __AVX2__
 

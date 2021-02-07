@@ -8,7 +8,6 @@
 #endif //MATRIX_H
 
 #include <stdexcept>
-#include <iostream>
 
 namespace Constellation
 {
@@ -476,3 +475,5 @@ namespace Constellation
     //        return os;
     //    }
 } // namespace Constellation
+
+#include "Arithmetic/Addition/avx_sse/int32_addition.hpp"

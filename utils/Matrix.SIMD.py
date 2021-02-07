@@ -5,7 +5,7 @@ int32 = {
     "typeAVX": "__m256i",
     "typeSSE": "__m128i",
     "addAVX": "_mm256_add_epi32",
-    "addSSE": "_mm_add_epi32", 
+    "addSSE": "_mm_add_epi32",
     "loadAVX": "_mm256_load_si256",
     "loadSSE": "_mm_load_si128",
     "storeAVX": "_mm256_store_si256",
@@ -21,7 +21,7 @@ float32 = {
     "typeAVX": "__m256",
     "typeSSE": "__m128",
     "addAVX": "_mm256_add_ps",
-    "addSSE": "_mm_add_ps", 
+    "addSSE": "_mm_add_ps",
     "loadAVX": "_mm256_load_ps",
     "loadSSE": "_mm_load_ps",
     "storeAVX": "_mm256_store_ps",
@@ -32,6 +32,7 @@ float32 = {
 
 # -------------------------------------------------------------------------------------------------
 
+
 def update_addition_for_data_type(dict, operation):
     result = operation
 
@@ -40,22 +41,27 @@ def update_addition_for_data_type(dict, operation):
 
     return result
 
+
 def update_addition_for_division(operation):
-    return operation.replace('>::operator+', '>::operator/').replace('+ a', '/ a').replace('_add_', '_div_')
-    
+    return operation.replace('>::operator+', '>::operator/').replace(
+        '+ a', '/ a').replace('_add_', '_div_')
+
+
 def update_addition_for_subtraction(operation):
-    return operation.replace('>::operator+', '>::operator-').replace('+ a', '- a').replace('_add_', '_sub_')
-    
+    return operation.replace('>::operator+', '>::operator-').replace(
+        '+ a', '- a').replace('_add_', '_sub_')
+
+
 def update_addition_for_multiplication(operation):
-    return operation.replace('>::operator+', '>::operator*').replace('+ a', '* a').replace('_add_', '_mul_')
-    
+    return operation.replace('>::operator+', '>::operator*').replace(
+        '+ a', '* a').replace('_add_', '_mul_')
+
+
 # -------------------------------------------------------------------------------------------------
 
 matrix_operation = """//
 // Created by Douwe den Blanken on 06/02/2021.
 //
-
-#include "Constellation/Matrix.h"
 
 // If the code is compiled with AVX2
 #ifdef __AVX2__
@@ -124,22 +130,22 @@ float32_multiplication = update_addition_for_multiplication(float32_addition)
 
 # -------------------------------------------------------------------------------------------------
 
-avx_sse_path = "src/avx_sse/"
+avx_sse_path = "include/Constellation/Arithmetic/"
 
 int32_name = 'int32'
 float32_name = 'float32'
 
-addition_path = "addition/"
-addition_suffix = "_addition.cpp"
+addition_path = "Addition/avx_sse/"
+addition_suffix = "_addition.hpp"
 
-division_path = "division/"
-division_suffix = "_division.cpp"
+division_path = "Division/avx_sse/"
+division_suffix = "_division.hpp"
 
-subtraction_path = "subtraction/"
-subtraction_suffix = "_subtraction.cpp"
+subtraction_path = "Subtraction/avx_sse/"
+subtraction_suffix = "_subtraction.hpp"
 
-multiplication_path = "multiplication/"
-multiplication_suffix = "_multiplication.cpp"
+multiplication_path = "Multiplication/avx_sse/"
+multiplication_suffix = "_multiplication.hpp"
 
 # -------------------------------------------------------------------------------------------------
 
@@ -153,11 +159,14 @@ f = open(avx_sse_path + division_path + int32_name + division_suffix, 'w')
 f.write(int32_division)
 f.close()
 
-f = open(avx_sse_path + subtraction_path + int32_name + subtraction_suffix, 'w')
+f = open(avx_sse_path + subtraction_path + int32_name + subtraction_suffix,
+         'w')
 f.write(int32_subtraction)
 f.close()
 
-f = open(avx_sse_path + multiplication_path + int32_name + multiplication_suffix, 'w')
+f = open(
+    avx_sse_path + multiplication_path + int32_name + multiplication_suffix,
+    'w')
 f.write(int32_multiplication)
 f.close()
 
@@ -173,12 +182,17 @@ f = open(avx_sse_path + division_path + float32_name + division_suffix, 'w')
 f.write(float32_division)
 f.close()
 
-f = open(avx_sse_path + subtraction_path + float32_name + subtraction_suffix, 'w')
+f = open(avx_sse_path + subtraction_path + float32_name + subtraction_suffix,
+         'w')
 f.write(float32_subtraction)
 f.close()
 
-f = open(avx_sse_path + multiplication_path + float32_name + multiplication_suffix, 'w')
+f = open(
+    avx_sse_path + multiplication_path + float32_name + multiplication_suffix,
+    'w')
 f.write(float32_multiplication)
 f.close()
 
 # -------------------------------------------------------------------------------------------------
+
+print("=> All AVX SEE (SIMD) files have been written!")

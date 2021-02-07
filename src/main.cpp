@@ -1,12 +1,13 @@
 #include <iostream>
 #include <chrono>
 
-#include "Constellation/Matrix.h"
-#include "Constellation/Vector.h"
-#include "Constellation/Vector3.h"
+#include "Constellation/Matrix.hpp"
+#include "Constellation/Vector.hpp"
+#include "Constellation/Vector3.hpp"
 
-int main() {
-    int dim = 2048;
+int main()
+{
+    int dim = 20 * 1000;
 
     float *firstValues = new float[dim * dim];
     float *secondValues = new float[dim * dim];
