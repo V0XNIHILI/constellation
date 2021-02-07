@@ -1,17 +1,3 @@
-# typeU
-# widthAVX
-# widthSSE
-# typeAVX
-# typeSSE
-# addAVX
-# addSSE
-# loadAVX
-# loadSSE
-# storeAVX
-# storeSSE
-# set1AVX
-# set1SSE
-
 matrix_addition = """    template<>
     Matrix<typeU> Matrix<typeU>::operator+(typeU const &a) const {
         typeU *summedMatrixValues = new typeU[size];
@@ -55,21 +41,41 @@ matrix_addition = """    template<>
         return c;
     }"""
 
-result = matrix_addition.replace("typeU", "int").replace("widthAVX", "8").replace("widthSSE", "4").replace("typeAVX", "__m256i").replace("typeSSE", "__m128i")
-result = result.replace("addAVX", "_mm256_add_epi32").replace("addSSE", "_mm_add_epi32").replace("loadAVX", "_mm256_load_si256").replace("loadSSE", "_mm_load_si128").replace("storeAVX", "_mm256_store_si256")
-result = result.replace("storeSSE", "_mm_store_si128").replace("set1AVX", "_mm256_set1_epi32").replace("set1SSE", "_mm_set1_epi32")
-# typeU
-# widthAVX
-# widthSSE
-# typeAVX
-# typeSSE
-# addAVX
-# addSSE
-# loadAVX
-# loadSSE
-# storeAVX
-# storeSSE
-# set1AVX
-# set1SSE
+integers = {
+    "typeU": "int",
+    "widthAVX": "8",
+    "widthSSE": "4",
+    "typeAVX": "__m256i",
+    "typeSSE": "__m128i",
+    "addAVX": "_mm256_add_epi32",
+    "addSSE": "_mm_add_epi32",
+    "loadAVX": "_mm256_load_si256",
+    "loadSSE": "_mm_load_si128",
+    "storeAVX": "_mm256_store_si256",
+    "storeSSE": "_mm_store_si128",
+    "set1AVX": "_mm256_set1_epi32",
+    "set1SSE": "_mm_set1_epi32",
+}
+
+floats = {
+    "typeU": "float",
+    "widthAVX": "8",
+    "widthSSE": "4",
+    "typeAVX": "__m256",
+    "typeSSE": "__m128",
+    "addAVX": "_mm256_add_ps",
+    "addSSE": "_mm_add_ps",
+    "loadAVX": "_mm256_load_ps",
+    "loadSSE": "_mm_load_ps",
+    "storeAVX": "_mm256_store_ps",
+    "storeSSE": "_mm_store_ps",
+    "set1AVX": "_mm256_set1_ps",
+    "set1SSE": "_mm_set_ps1",
+}
+
+result = matrix_addition
+
+for key in floats:
+   result = result.replace(key, floats[key])
 
 print(result)

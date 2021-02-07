@@ -1,12 +1,12 @@
 #include <iostream>
 #include <chrono>
 
-#include "Matrix.h"
-#include "Vector.h"
-#include "Vector3.h"
+#include "Constellation/Matrix.h"
+#include "Constellation/Vector.h"
+#include "Constellation/Vector3.h"
 
 int main() {
-    int dim = 4;
+    int dim = 2048;
 
     float *firstValues = new float[dim * dim];
     float *secondValues = new float[dim * dim];
@@ -31,7 +31,7 @@ int main() {
 
     auto begin = std::chrono::high_resolution_clock::now();
 
-    Constellation::Matrix<int> c = f + g;
+    Constellation::Matrix<int> c = f + 3;
 
     auto end = std::chrono::high_resolution_clock::now();
 

@@ -2,6 +2,8 @@
 // Created by Douwe den Blanken on 06/02/2021.
 //
 
+#include "Constellation/Matrix.h"
+
 // If the code is compiled with AVX2
 #ifdef __AVX2__
 
@@ -9,6 +11,7 @@
 
 namespace Constellation
 {
+        // 96 (3.5x) -128 (4x) - 256 (5.8x) - 512 (7.3x) - 1024 (7.8x) - 2048 (7.9x)
     template <>
     Matrix<int> Matrix<int>::operator+(int const &a) const
     {
