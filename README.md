@@ -1,3 +1,5 @@
-```
-g++ -std=c++11 -Ofast -march=native -flto Matrix.cpp && ./a.out
-```
+# Constellation
+
+High performance linear algebra library for C++.
+
+[LICENSE](./LICENSE)
