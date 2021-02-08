@@ -476,4 +476,4 @@ namespace Constellation
     //    }
 } // namespace Constellation
 
-#include "Arithmetic/Addition/avx_sse/int32_addition.hpp"
+#include "Arithmetic/Addition/AVX-SSE/Int32Addition.hpp"
