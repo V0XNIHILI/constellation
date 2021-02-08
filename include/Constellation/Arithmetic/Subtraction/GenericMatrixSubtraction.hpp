@@ -2,8 +2,6 @@
 // Created by Douwe den Blanken on 08/02/2021.
 //
 
-#include <stdexcept>
-
 namespace Constellation {
     template<typename U>
     Matrix <U> Matrix<U>::operator-(Matrix <U> const &a) const {
