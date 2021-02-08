@@ -8,6 +8,7 @@
 #endif //MATRIX_H
 
 #include <stdexcept>
+#include <string>
 
 namespace Constellation
 {
@@ -81,12 +82,19 @@ namespace Constellation
             }
         }
 
-        void checkAddDimensions(int w, int h) const
+    private:
+        /**
+         * @brief Throws an error when either the widths or the heights of two matrices do not match
+         *
+         * @param a Matrix to be checked against
+         * @param verb Word that will be added in the error message. Can be 'added' or 'divided' etc.
+         */
+        void checkDimensionCompatibility(Matrix<U> const &a, std::string verb) const
         {
-            if (w != width)
-                throw std::invalid_argument("Widths of matrices to be added do not match");
-            else if (h != height)
-                throw std::invalid_argument("Heights of matrices to be added do not match");
+            if (a.getWidth() != width)
+                throw std::invalid_argument("Widths of matrices to be " + verb + " do not match");
+            else if (a.getHeight() != height)
+                throw std::invalid_argument("Heights of matrices to be " + verb + " not match");
         }
 
     public:

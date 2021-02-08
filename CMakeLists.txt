@@ -20,4 +20,10 @@ include_directories( ./include ./src )
 # target
 add_executable( binary ./src/main.cpp )
 
-# external libs
+# tests
+#enable_testing()
+add_executable(all_tests tests/main.cpp)
+set(INSTALL_GTEST OFF)
+add_subdirectory(libs/googletest)
+target_link_libraries(all_tests gtest gtest_main)
+#add_test( all_tests all_tests )
