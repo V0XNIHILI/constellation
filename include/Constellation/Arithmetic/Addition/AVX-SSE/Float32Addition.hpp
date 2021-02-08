@@ -20,7 +20,7 @@ namespace Constellation
             const __m256 firstAVX = _mm256_set1_ps(a);
 
             for (int i = 0; i < amountAVX; i += 8) {
-                __m256 second = _mm256_load_ps((__m256 * ) & values[i]);
+                __m256 second = _mm256_load_ps(values[i]);
 
                 __m256 result = _mm256_add_ps(second, firstAVX);
 

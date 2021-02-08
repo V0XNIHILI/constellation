@@ -105,6 +105,38 @@ namespace Constellation
         Matrix(int w, int h, U *v) : Matrix(w, h, v, false) {}
 
         /**
+         * @brief Check if two matrices are equal to each other in terms of dimensions and values.
+         * 
+         * @param a Matrix to check against
+         * @return bool
+         */
+        bool operator==(Matrix<U> const &a) const
+        {
+            if (a.getWidth() == width)
+            {
+                if (a.getHeight() == height)
+                {
+                    U *matrixAValues = a.getValues();
+
+                    bool equals = true;
+
+                    for (int i = 0; i < size; i++)
+                    {
+                        if (matrixAValues[i] != values[i])
+                        {
+                            equals = false;
+                            break;
+                        }
+                    }
+
+                    return equals;
+                }
+            }
+
+            return false;
+        }
+
+        /**
          * @brief Add two matrices
          *
          * @param a Matrix to be added
@@ -126,37 +158,7 @@ namespace Constellation
          * @param a Matrix to be subtracted
          * @return Matrix
          */
-        Matrix<U> operator-(Matrix const &a) const
-        {
-            if (a.getWidth() == width)
-            {
-                if (a.getHeight() == height)
-                {
-                    U *subtractedMatrixValues;
-
-                    subtractedMatrixValues = new U[size];
-
-                    U *matrixAValues = a.getValues();
-
-                    for (int i = 0; i < size; i++)
-                    {
-                        subtractedMatrixValues[i] = values[i] - matrixAValues[i];
-                    }
-
-                    Matrix<U> c(width, height, subtractedMatrixValues, true);
-
-                    return c;
-                }
-                else
-                {
-                    throw std::invalid_argument("Heights of matrices to be subtracted do not match");
-                }
-            }
-            else
-            {
-                throw std::invalid_argument("Widths of matrices to be subtracted do not match");
-            }
-        }
+        Matrix<U> operator-(Matrix<U> const &a) const;
 
         /**
          * @brief Subtract a certain value from the matrix
@@ -164,19 +166,7 @@ namespace Constellation
          * @param a Value to subtract from all matrix entries
          * @return Matrix
          */
-        Matrix<U> operator-(U const &a) const
-        {
-            U *subtractedMatrixValues = new U[size];
-
-            for (int i = 0; i < size; i++)
-            {
-                subtractedMatrixValues[i] = values[i] - a;
-            }
-
-            Matrix<U> c(width, height, subtractedMatrixValues, true);
-
-            return c;
-        }
+        Matrix<U> operator-(U const &a) const;
 
         /**
          * @brief Multiply two matrices
@@ -188,63 +178,7 @@ namespace Constellation
          * @param a Matrix to be multiplied
          * @return Matrix
          */
-        Matrix<U> operator*(Matrix<U> const &a) const
-        {
-            int matrixAWidth = a.getWidth();
-
-            int matrixAHeight = a.getHeight();
-
-            if (matrixAWidth == height && matrixAHeight == width)
-            {
-                U *multipliedMatrixValues = new U[size];
-
-                U *matrixAValues = a.getValues();
-
-                int kTimesAWidth[matrixAHeight];
-
-                for (int k = 0; k < matrixAHeight; k++)
-                {
-                    kTimesAWidth[k] = k * matrixAWidth;
-                }
-
-                int jTimesWidth[width];
-
-                for (int j = 0; j < width; j++)
-                {
-                    jTimesWidth[j] = j * width;
-                }
-
-                //            std::for_each(std::execution::par_unseq, 0, matrixAWidth, [&](int i) {
-                for (int i = 0; i < matrixAWidth; i++)
-                {
-                    for (int j = 0; j < height; j++)
-                    {
-                        int locationInNewMatrix = j * matrixAWidth + i;
-
-                        int location = jTimesWidth[j];
-
-                        multipliedMatrixValues[locationInNewMatrix] = 0;
-
-                        // j, i =============> j, k =>>>>>>>>>> k , i
-                        for (int k = 0; k < matrixAHeight; k++)
-                        {
-                            // Updating the value in the matrix is faster than summing and then setting the value in the matrix to the sum (about 7% faster)
-                            multipliedMatrixValues[locationInNewMatrix] +=
-                                values[location + k] * matrixAValues[kTimesAWidth[k] + i];
-                        }
-                    }
-                }
-                //            });
-
-                Matrix<U> c(matrixAWidth, height, multipliedMatrixValues, true);
-
-                return c;
-            }
-            else
-            {
-                throw std::invalid_argument("Dimensions of matrices to be multiplied are not corresponding");
-            }
-        }
+        Matrix<U> operator*(Matrix<U> const &a) const;
 
         /**
          * @brief Multiply the matrix with a certain value
@@ -252,19 +186,15 @@ namespace Constellation
          * @param a Value to multiply matrix with
          * @return Matrix
          */
-        Matrix<U> operator*(U const &a) const
-        {
-            U *multipliedMatrixValues = new U[size];
+        Matrix<U> operator*(U const &a) const;
 
-            for (int i = 0; i < size; i++)
-            {
-                multipliedMatrixValues[i] = values[i] * a;
-            }
-
-            Matrix<U> c(width, height, multipliedMatrixValues, true);
-
-            return c;
-        }
+        /**
+         * @brief Divide the matrix by a certain value
+         *
+         * @param a Value to divide all matrix entries by
+         * @return Matrix
+         */
+        Matrix<U> operator/(U const &a) const;
 
         /**
          * @brief Calculate the dot product of two matrices
@@ -298,46 +228,6 @@ namespace Constellation
             {
                 throw std::invalid_argument("Widths of matrices to be added do not match");
             }
-        }
-
-        //    /**
-        //     * @brief Raise all entries in the matrix to a certain power
-        //     *
-        //     * @param a Value to raise all matrix entries to the power by
-        //     * @return Matrix
-        //     */
-        //    Matrix operator^(float const &a) const {
-        //        float *raisedMatrixValues = new float[size];
-        //
-        //        for (int i = 0; i < size; i++) {
-        //            raisedMatrixValues[i] = std::pow(values[i], a);
-        //        }
-        //
-        //        Matrix c(width, height, raisedMatrixValues);
-        //
-        //        delete[] raisedMatrixValues;
-        //
-        //        return c;
-        //    }
-
-        /**
-         * @brief Divide the matrix by a certain value
-         *
-         * @param a Value to divide all matrix entries by
-         * @return Matrix
-         */
-        Matrix<U> operator/(Matrix<U> const &a) const
-        {
-            U *dividedMatrixValues = new U[size];
-
-            for (int i = 0; i < size; i++)
-            {
-                dividedMatrixValues[i] = values[i] / a;
-            }
-
-            Matrix<U> c(width, height, dividedMatrixValues, true);
-
-            return c;
         }
 
         /**
@@ -413,52 +303,6 @@ namespace Constellation
         // friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &a);
     };
 
-    template <typename U>
-    Matrix<U> Matrix<U>::operator+(Matrix<U> const &a) const
-    {
-        if (a.getWidth() == width)
-        {
-            if (a.getHeight() == height)
-            {
-                U *summedMatrixValues = new U[size];
-
-                U *matrixAValues = a.getValues();
-
-                for (int i = 0; i < size; i++)
-                {
-                    summedMatrixValues[i] = values[i] + matrixAValues[i];
-                }
-
-                Matrix<U> c(width, height, summedMatrixValues, true);
-
-                return c;
-            }
-            else
-            {
-                throw std::invalid_argument("Heights of matrices to be added do not match");
-            }
-        }
-        else
-        {
-            throw std::invalid_argument("Widths of matrices to be added do not match");
-        }
-    }
-
-    template <typename U>
-    Matrix<U> Matrix<U>::operator+(U const &a) const
-    {
-        U *summedMatrixValues = new U[size];
-
-        for (int i = 0; i < size; i++)
-        {
-            summedMatrixValues[i] = values[i] + a;
-        }
-
-        Matrix<U> c(width, height, summedMatrixValues, true);
-
-        return c;
-    }
-
     //    template<typename U>
     //    std::ostream& operator<<(std::ostream &os, const Matrix<U> &a) {
     //        os << "[ ";
@@ -476,4 +320,22 @@ namespace Constellation
     //    }
 } // namespace Constellation
 
+#include "Arithmetic/Addition/GenericAddition.hpp"
+#include "Arithmetic/Addition/GenericMatrixAddition.hpp"
+
+#include "Arithmetic/Subtraction/GenericSubtraction.hpp"
+#include "Arithmetic/Subtraction/GenericMatrixSubtraction.hpp"
+
+#include "Arithmetic/Multiplication/GenericMultiplication.hpp"
+#include "Arithmetic/Multiplication/GenericMatrixMultiplication.hpp"
+
+#include "Arithmetic/Division/GenericDivision.hpp"
+
 #include "Arithmetic/Addition/AVX-SSE/Int32Addition.hpp"
+// #include "Arithmetic/Subtraction/AVX-SSE/Int32Subtraction.hpp"
+// #include "Arithmetic/Multiplication/AVX-SSE/Int32Multiplication.hpp"
+
+// #include "Arithmetic/Addition/AVX-SSE/Float32Addition.hpp"
+// #include "Arithmetic/Division/AVX-SSE/Float32Division.hpp"
+// #include "Arithmetic/Subtraction/AVX-SSE/Float32Subtraction.hpp"
+// #include "Arithmetic/Multiplication/AVX-SSE/Float32Multiplication.hpp"
