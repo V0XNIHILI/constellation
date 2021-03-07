@@ -132,20 +132,21 @@ float32_multiplication = update_addition_for_multiplication(float32_addition)
 
 avx_sse_path = "include/Constellation/Arithmetic/"
 
-int32_name = 'int32'
-float32_name = 'float32'
+int32_name = 'Int32'
+float32_name = 'Float32'
+file_extenston = ".hpp"
 
-addition_path = "Addition/avx_sse/"
-addition_suffix = "_addition.hpp"
+addition_path = "Addition/AVX-SSE/"
+addition_suffix = "Addition" + file_extenston
 
-division_path = "Division/avx_sse/"
-division_suffix = "_division.hpp"
+division_path = "Division/AVX-SSE/"
+division_suffix = "Division" + file_extenston
 
-subtraction_path = "Subtraction/avx_sse/"
-subtraction_suffix = "_subtraction.hpp"
+subtraction_path = "Subtraction/AVX-SSE/"
+subtraction_suffix = "Subtraction" + file_extenston
 
-multiplication_path = "Multiplication/avx_sse/"
-multiplication_suffix = "_multiplication.hpp"
+multiplication_path = "Multiplication/AVX-SSE/"
+multiplication_suffix = "Multiplication" + file_extenston
 
 # -------------------------------------------------------------------------------------------------
 
@@ -155,9 +156,9 @@ f = open(avx_sse_path + addition_path + int32_name + addition_suffix, 'w')
 f.write(int32_addition)
 f.close()
 
-f = open(avx_sse_path + division_path + int32_name + division_suffix, 'w')
-f.write(int32_division)
-f.close()
+# f = open(avx_sse_path + division_path + int32_name + division_suffix, 'w')
+# f.write(int32_division)
+# f.close()
 
 f = open(avx_sse_path + subtraction_path + int32_name + subtraction_suffix,
          'w')

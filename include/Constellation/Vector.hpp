@@ -2,10 +2,10 @@
 // Created by Douwe den Blanken on 01/02/2021.
 //
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef CONSTELLATION_VECTOR_HPP
+#define CONSTELLATION_VECTOR_HPP
 
-#endif //VECTOR_H
+#endif //CONSTELLATION_VECTOR_HPP
 
 namespace Constellation {
     template<typename U>

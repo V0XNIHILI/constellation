@@ -2,24 +2,24 @@
 // Created by Douwe den Blanken on 01/02/2021.
 //
 
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef CONSTELLATION_MATRIX_HPP
+#define CONSTELLATION_MATRIX_HPP
 
-#endif //MATRIX_H
+#endif //CONSTELLATION_MATRIX_HPP
 
 #include <stdexcept>
 #include <string>
+#include <fstream>
+#include <cmath>
 
-namespace Constellation
-{
-    template <typename U>
+namespace Constellation {
+    template<typename U>
     /**
      * Matrix class
      *
      * @tparam U type of data that the matrix should hold
      */
-    class Matrix
-    {
+    class Matrix {
     protected:
         // Width of the matrix
         int width;
@@ -44,40 +44,29 @@ namespace Constellation
          * @param passByReference Whether or not to copy the values into the values array of the matrix. True = copying
          * the pointer, false = copying the values
          */
-        Matrix(int w, int h, U *v, bool passByReference)
-        {
-            if (w > 0)
-            {
-                if (h > 0)
-                {
+        Matrix(int w, int h, U *v, bool passByReference) {
+            if (w > 0) {
+                if (h > 0) {
                     width = w;
                     height = h;
 
                     size = h * w;
 
-                    if (passByReference == true)
-                    {
+                    if (passByReference == true) {
                         values = v;
-                    }
-                    else
-                    {
+                    } else {
                         values = new U[size];
 
                         // Copy the numerical values from the array into the matrix
                         // Copying speed on MacBook Pro 2014: n^2 * 2.015625E-6 ms
-                        for (int i = 0; i < size; i++)
-                        {
+                        for (int i = 0; i < size; i++) {
                             values[i] = v[i];
                         }
                     }
-                }
-                else
-                {
+                } else {
                     throw std::invalid_argument("Matrix height should be larger than 0");
                 }
-            }
-            else
-            {
+            } else {
                 throw std::invalid_argument("Matrix width should be larger than 0");
             }
         }
@@ -89,8 +78,7 @@ namespace Constellation
          * @param a Matrix to be checked against
          * @param verb Word that will be added in the error message. Can be 'added' or 'divided' etc.
          */
-        void checkDimensionCompatibility(Matrix<U> const &a, std::string verb) const
-        {
+        void checkDimensionCompatibility(Matrix<U> const &a, std::string verb) const {
             if (a.getWidth() != width)
                 throw std::invalid_argument("Widths of matrices to be " + verb + " do not match");
             else if (a.getHeight() != height)
@@ -98,8 +86,7 @@ namespace Constellation
         }
 
     public:
-        ~Matrix()
-        {
+        ~Matrix() {
             delete[] values;
         }
 
@@ -113,25 +100,27 @@ namespace Constellation
         Matrix(int w, int h, U *v) : Matrix(w, h, v, false) {}
 
         /**
+         * @brief Construct a new Matrix object from values in the file with the supplied file name
+         *
+         * @param fileName Name of the file in which the values of the matrix are stored
+         */
+        Matrix(std::string fileName) {}
+
+        /**
          * @brief Check if two matrices are equal to each other in terms of dimensions and values.
          * 
          * @param a Matrix to check against
          * @return bool
          */
-        bool operator==(Matrix<U> const &a) const
-        {
-            if (a.getWidth() == width)
-            {
-                if (a.getHeight() == height)
-                {
+        bool operator==(Matrix<U> const &a) const {
+            if (a.getWidth() == width) {
+                if (a.getHeight() == height) {
                     U *matrixAValues = a.getValues();
 
                     bool equals = true;
 
-                    for (int i = 0; i < size; i++)
-                    {
-                        if (matrixAValues[i] != values[i])
-                        {
+                    for (int i = 0; i < size; i++) {
+                        if (matrixAValues[i] != values[i]) {
                             equals = false;
                             break;
                         }
@@ -179,10 +168,6 @@ namespace Constellation
         /**
          * @brief Multiply two matrices
          *
-         * @todo look at SIMD (http://www.cs.uu.nl/docs/vakken/magr/2017-2018/files/SIMD%20Tutorial.pdf)
-         * @todo Implement strassen
-         * @todo Parallelize it
-         *
          * @param a Matrix to be multiplied
          * @return Matrix
          */
@@ -210,32 +195,19 @@ namespace Constellation
          * @param a Matrix using which the dot product should be calculated
          * @return Matrix
          */
-        U dot(Matrix<U> const &a) const
-        {
-            if (a.getWidth() == width)
-            {
-                if (a.getHeight() == height)
-                {
-                    U dotProduct = U();
+        U dot(Matrix<U> const &a) const {
+            checkDimensionCompatibility(a, "dotted");
 
-                    U *matrixAValues = a.getValues();
+            // Zero initialization of the dot product (see: https://en.cppreference.com/w/cpp/language/zero_initialization)
+            U dotProduct = U();
 
-                    for (int i = 0; i < size; i++)
-                    {
-                        dotProduct += values[i] * matrixAValues[i];
-                    }
+            U *matrixAValues = a.getValues();
 
-                    return dotProduct;
-                }
-                else
-                {
-                    throw std::invalid_argument("Heights of matrices to be added do not match");
-                }
+            for (int i = 0; i < size; i++) {
+                dotProduct += values[i] * matrixAValues[i];
             }
-            else
-            {
-                throw std::invalid_argument("Widths of matrices to be added do not match");
-            }
+
+            return dotProduct;
         }
 
         /**
@@ -243,12 +215,10 @@ namespace Constellation
          *
          * @return Matrix
          */
-        Matrix<U> T() const
-        {
+        Matrix<U> T() const {
             U *transposedMatrixValues = new U[size];
 
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 int valueLocation = (i / width) + (i % width) * height;
 
                 transposedMatrixValues[i] = values[valueLocation];
@@ -264,8 +234,7 @@ namespace Constellation
          *
          * @return int
          */
-        int getWidth() const
-        {
+        int getWidth() const {
             return width;
         }
 
@@ -274,31 +243,28 @@ namespace Constellation
          *
          * @return int
          */
-        int getHeight() const
-        {
+        int getHeight() const {
             return height;
         }
 
         /**
-         * Returns the values of the matrix in a 1D array
+         * Returns the values of the matrix in an 1D array
          *
          * @return U
          */
-        U *getValues() const
-        {
+        U *getValues() const {
             return values;
         }
 
         /**
          * @brief Returns the value in the matrix at the provided coordinates
          *
-         * @param x horizontal coordinate
-         * @param y vertical coordinate
+         * @param x horizontal coordinate (0 indexed)
+         * @param y vertical coordinate (0 indexed)
          *
          * @return U
          */
-        U getValueAt(int x, int y) const
-        {
+        U getValueAt(int x, int y) const {
             if (x >= width)
                 throw std::invalid_argument("Provided x coordinate is not in matrix");
 
@@ -308,6 +274,30 @@ namespace Constellation
             return values[width * y + x];
         }
 
+        /**
+         * @brief Save the values in the matrix into a CSV file
+         *
+         * @todo Add binary export for smaller outfiles
+         *
+         * @param fileName Name of the file in which the values should be saved
+         */
+        void save(std::string fileName) {
+            std::ofstream file(fileName);
+
+            if (file.is_open()) {
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        file << values[j + i * width] << ';';
+                    }
+
+                    // Make sure that there is no empty line at the end of the file
+                    if (i != height - 1)
+                        file << '\n';
+                }
+            }
+
+            file.close();
+        }
         // friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &a);
     };
 
@@ -327,19 +317,29 @@ namespace Constellation
     //        return os;
     //    }
 } // namespace Constellation
+//
+//Constellation::Matrix<float> std::sin(Constellation::Matrix<float> __lcpp_x) {
+//
+//};
 
-#include "Arithmetic/Addition/GenericAddition.hpp"
-#include "Arithmetic/Addition/GenericMatrixAddition.hpp"
+//typename std::enable_if<std::is_integral<_A1>::value, double>::type std::sin(_A1 __lcpp_x) noexcept {
+//
+//}
 
-#include "Arithmetic/Subtraction/GenericSubtraction.hpp"
-#include "Arithmetic/Subtraction/GenericMatrixSubtraction.hpp"
+//template<Constellation::Matrix<float>> inline std::enable_if<std::is_integral<float>::value, float>::type sin(_A1 __lcpp_x) {
 
-#include "Arithmetic/Multiplication/GenericMultiplication.hpp"
-#include "Arithmetic/Multiplication/GenericMatrixMultiplication.hpp"
-
-#include "Arithmetic/Division/GenericDivision.hpp"
-
-#include "Arithmetic/Addition/AVX-SSE/Int32Addition.hpp"
+//#include "Arithmetic/Addition/GenericAddition.hpp"
+//#include "Arithmetic/Addition/GenericMatrixAddition.hpp"
+//
+//#include "Arithmetic/Subtraction/GenericSubtraction.hpp"
+//#include "Arithmetic/Subtraction/GenericMatrixSubtraction.hpp"
+//
+//#include "Arithmetic/Multiplication/GenericMultiplication.hpp"
+//#include "Arithmetic/Multiplication/GenericMatrixMultiplication.hpp"
+//
+//#include "Arithmetic/Division/GenericDivision.hpp"
+//
+//#include "Arithmetic/Addition/AVX-SSE/Int32Addition.hpp"
 // #include "Arithmetic/Subtraction/AVX-SSE/Int32Subtraction.hpp"
 // #include "Arithmetic/Multiplication/AVX-SSE/Int32Multiplication.hpp"
 
@@ -347,3 +347,5 @@ namespace Constellation
 // #include "Arithmetic/Division/AVX-SSE/Float32Division.hpp"
 // #include "Arithmetic/Subtraction/AVX-SSE/Float32Subtraction.hpp"
 // #include "Arithmetic/Multiplication/AVX-SSE/Float32Multiplication.hpp"
+
+//#include "Learning/Learning.hpp"

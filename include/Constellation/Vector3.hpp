@@ -2,10 +2,10 @@
 // Created by Douwe den Blanken on 01/02/2021.
 //
 
-#ifndef VECTOR3_H
-#define VECTOR3_H
+#ifndef CONSTELLATION_VECTOR3_HPP
+#define CONSTELLATION_VECTOR3_HPP
 
-#endif //VECTOR3_H
+#endif //CONSTELLATION_VECTOR3_HPP
 
 #include <immintrin.h>
 
