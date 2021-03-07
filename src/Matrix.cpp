@@ -6,8 +6,6 @@
 #include <Constellation/Matrix.hpp>
 
 namespace Constellation {
-//    template<typename U>
-
     template<>
     Matrix<int> Matrix<int>::operator+(int const &a) const {
         int *summedMatrixValues = new int[size];

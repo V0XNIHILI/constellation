@@ -301,51 +301,19 @@ namespace Constellation {
         // friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &a);
     };
 
-    //    template<typename U>
-    //    std::ostream& operator<<(std::ostream &os, const Matrix<U> &a) {
-    //        os << "[ ";
-    //
-    //        for (size_t i = this->size; i--;) {
-    //            if ((size - 1 - i) % width == 0)
-    //                os << "\n";
-    //
-    //            os << values[size - 1 - i] << " ";
-    //        }
-    //
-    //        os << "]" << std::endl;
-    //
-    //        return os;
-    //    }
+    template<typename U>
+    std::ostream &operator<<(std::ostream &os, const Matrix<U> &a) {
+        os << "[ ";
+
+        for (size_t i = a.getWidth() * a.getHeight(); i--;) {
+            if ((a.getWidth() * a.getHeight() - 1 - i) % a.getWidth() == 0)
+                os << "\n";
+
+            os << a.getValues()[a.getWidth() * a.getHeight() - 1 - i] << " ";
+        }
+
+        os << "]" << std::endl;
+
+        return os;
+    }
 } // namespace Constellation
-//
-//Constellation::Matrix<float> std::sin(Constellation::Matrix<float> __lcpp_x) {
-//
-//};
-
-//typename std::enable_if<std::is_integral<_A1>::value, double>::type std::sin(_A1 __lcpp_x) noexcept {
-//
-//}
-
-//template<Constellation::Matrix<float>> inline std::enable_if<std::is_integral<float>::value, float>::type sin(_A1 __lcpp_x) {
-
-//#include "Arithmetic/Addition/GenericAddition.hpp"
-//#include "Arithmetic/Addition/GenericMatrixAddition.hpp"
-//
-//#include "Arithmetic/Subtraction/GenericSubtraction.hpp"
-//#include "Arithmetic/Subtraction/GenericMatrixSubtraction.hpp"
-//
-//#include "Arithmetic/Multiplication/GenericMultiplication.hpp"
-//#include "Arithmetic/Multiplication/GenericMatrixMultiplication.hpp"
-//
-//#include "Arithmetic/Division/GenericDivision.hpp"
-//
-//#include "Arithmetic/Addition/AVX-SSE/Int32Addition.hpp"
-// #include "Arithmetic/Subtraction/AVX-SSE/Int32Subtraction.hpp"
-// #include "Arithmetic/Multiplication/AVX-SSE/Int32Multiplication.hpp"
-
-// #include "Arithmetic/Addition/AVX-SSE/Float32Addition.hpp"
-// #include "Arithmetic/Division/AVX-SSE/Float32Division.hpp"
-// #include "Arithmetic/Subtraction/AVX-SSE/Float32Subtraction.hpp"
-// #include "Arithmetic/Multiplication/AVX-SSE/Float32Multiplication.hpp"
-
-//#include "Learning/Learning.hpp"
