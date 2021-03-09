@@ -2,9 +2,20 @@
 // Created by Douwe den Blanken on 07/03/2021.
 //
 
+#include <stdexcept>
+
 #include <gtest/gtest.h>
 
 #include <Constellation/Matrix.hpp>
+
+TEST (ConstructionTests, Matrix
+) {
+    int aValues[4] = {16, 2, 77, 40};
+
+    EXPECT_THROW(Constellation::Matrix<int>(-2, 2, aValues), std::invalid_argument);
+    EXPECT_THROW(Constellation::Matrix<int>(2, -2, aValues), std::invalid_argument);
+    EXPECT_THROW(Constellation::Matrix<int>(-2, -2, aValues), std::invalid_argument);
+}
 
 TEST (OperatorTests, Equals
 ) {
@@ -61,6 +72,20 @@ TEST (OperatorTests, MatrixAddition
     EXPECT_EQ (c, a + b);
 }
 
+TEST (OperatorTests, MatrixMultiplication
+) {
+    int aValues[4] = {16, 2, 77, 40};
+    int bValues[4] = {19, 5, 80, 43};
+    int cValues[4] = {464, 166, 4663, 2105};
+
+    Constellation::Matrix<int> a(2, 2, aValues);
+    Constellation::Matrix<int> b(2, 2, bValues);
+    Constellation::Matrix<int> c(2, 2, cValues);
+
+    // Check regular matrix addition
+    EXPECT_EQ (c, a * b);
+}
+
 TEST (MethodTests, DotProduct
 ) {
     int aValues[4] = {16, 2, 77, 40};
@@ -81,4 +106,32 @@ TEST (MethodTests, TranposeTest
     Constellation::Matrix<int> b(2, 2, bValues);
 
     EXPECT_EQ (b, a.T());
+}
+
+TEST (MethodTests, Replace
+) {
+    int aValues[4] = {16, 2, 77, 40};
+    int bValues[4] = {16, 2, -1, -1};
+    int cValues[4] = {16, 2, 33, 33};
+
+    Constellation::Matrix<int> a(2, 2, aValues);
+    Constellation::Matrix<int> b(2, 2, bValues);
+    Constellation::Matrix<int> c(2, 2, cValues);
+
+    EXPECT_EQ (b, a.replace('>', 20, -1));
+    EXPECT_EQ (b, c.replace('=', 33, -1));
+    EXPECT_EQ (c, b.replace('<', 0, 33));
+}
+
+TEST (MethodTests, EntryWiseMultiplication
+) {
+    int aValues[4] = {16, 2, 77, 40};
+    int bValues[4] = {16, 3, 77, 40};
+    int cValues[4] = {256, 6, 5929, 1600};
+
+    Constellation::Matrix<int> a(2, 2, aValues);
+    Constellation::Matrix<int> b(2, 2, bValues);
+    Constellation::Matrix<int> c(2, 2, cValues);
+
+    EXPECT_EQ (c, a.entryWise(b));
 }

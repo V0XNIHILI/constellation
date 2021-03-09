@@ -51,6 +51,26 @@ namespace Constellation {
 
             return false;
         }
+
+        U *getValues() const {
+            U *matrixValues = new U[this->size];
+
+            int secondDiagonalIndex = this->width + 1;
+
+            int j = 0;
+
+            for (int i = 0; i < this->size; i++) {
+                if (i % secondDiagonalIndex == 0) {
+                    matrixValues[i] = this->values[j];
+
+                    j += 1;
+                } else {
+                    matrixValues[i] = low;
+                }
+            }
+
+            return matrixValues;
+        }
     };
 }
 

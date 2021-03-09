@@ -192,7 +192,7 @@ namespace Constellation {
          * @param a Matrix to divide the matrix by
          * @return Matrix
          */
-        Matrix<U> operator/(Matrix <U> const &a) const;
+        Matrix<U> operator/(Matrix<U> const &a) const;
 
         /**
          * @brief Calculate a certain power of the matrix
@@ -250,6 +250,30 @@ namespace Constellation {
             return c;
         }
 
+        Matrix<U> replace(char where, U value, U with) const {
+            U *replacedMatrixValues = new U[size];
+
+            if (where == '>') {
+                for (int i = 0; i < size; i++) {
+                    replacedMatrixValues[i] = values[i] > value ? with : values[i];
+                }
+            } else if (where == '=') {
+                for (int i = 0; i < size; i++) {
+                    replacedMatrixValues[i] = values[i] == value ? with : values[i];
+                }
+            } else if (where == '<') {
+                for (int i = 0; i < size; i++) {
+                    replacedMatrixValues[i] = values[i] < value ? with : values[i];
+                }
+            } else {
+                throw std::invalid_argument("The supplied 'where' is not >, = or <");
+            }
+
+            Matrix c(height, width, replacedMatrixValues, true);
+
+            return c;
+        }
+
         /**
          * Returns the width of the matrix
          *
@@ -273,7 +297,7 @@ namespace Constellation {
          *
          * @return U
          */
-        U *getValues() const {
+        virtual U *getValues() const {
             return values;
         }
 
@@ -285,7 +309,7 @@ namespace Constellation {
          *
          * @return U
          */
-        U getValueAt(int x, int y) const {
+        U operator()(int &x, int &y) const {
             if (x >= width)
                 throw std::invalid_argument("Provided x coordinate is not in matrix");
 
@@ -337,6 +361,7 @@ namespace Constellation {
 
         return os;
     }
+
 } // namespace Constellation
 
 #include "Arithmetic/Addition/ValueAddition.hpp"
@@ -350,5 +375,7 @@ namespace Constellation {
 
 #include "Arithmetic/Subtraction/ValueSubtraction.hpp"
 #include "Arithmetic/Subtraction/MatrixSubtraction.hpp"
+
+#include "Arithmetic/EntryWiseMultiplication.hpp"
 
 #endif //CONSTELLATION_MATRIX_HPP

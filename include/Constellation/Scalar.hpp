@@ -11,8 +11,13 @@ namespace Constellation {
     template<typename U>
     class Scalar : public Diagonal<U> {
 
-    public:
+    protected:
         U high;
+
+    public:
+        U getValueAlongDiagonal() const {
+            return high;
+        }
 
         Scalar(int d, U v) : Diagonal<U>(d, new U[0]) {
             high = v;
@@ -27,7 +32,7 @@ namespace Constellation {
         Scalar<U> operator+(Scalar<U> const &a) const {
             this->checkDimensionCompatibility(a, "added");
 
-            U summedScalarValue = high + a.high;
+            U summedScalarValue = high + a.getValueAlongDiagonal();
 
             Scalar<U> c(this->width, summedScalarValue);
 
@@ -43,7 +48,7 @@ namespace Constellation {
         Scalar<U> operator-(Scalar<U> const &a) const {
             this->checkDimensionCompatibility(a, "subtracted");
 
-            U subtractedScalarValue = high - a.high;
+            U subtractedScalarValue = high - a.getValueAlongDiagonal();
 
             Scalar<U> c(this->width, subtractedScalarValue);
 
@@ -59,7 +64,7 @@ namespace Constellation {
         Scalar<U> operator*(Scalar<U> const &a) const {
             this->checkDimensionCompatibility(a, "multiplied");
 
-            U multipliedScalarValue = high * a.high;
+            U multipliedScalarValue = high * a.getValueAlongDiagonal();
 
             Scalar<U> c(this->width, multipliedScalarValue);
 
@@ -75,7 +80,7 @@ namespace Constellation {
         Scalar<U> operator/(Scalar<U> const &a) const {
             this->checkDimensionCompatibility(a, "divided");
 
-            U dividedScalarValue = high / a.high;
+            U dividedScalarValue = high / a.getValueAlongDiagonal();
 
             Scalar<U> c(this->width, dividedScalarValue);
 
@@ -120,6 +125,40 @@ namespace Constellation {
          */
         Scalar<U> operator-(U const &a) const {
             return Scalar<U>(this->width, high - a);
+        }
+
+        bool operator==(Matrix<U> const &a) const {
+            if (a.getWidth() == this->width) {
+                if (a.getHeight() == this->height) {
+                    U *matrixAValues = a.getValues();
+
+                    bool equals = true;
+
+                    int secondDiagonalIndex = this->width + 1;
+
+                    int j = 0;
+
+                    for (int i = 0; i < this->size; i++) {
+                        if (i % secondDiagonalIndex == 0) {
+                            if (matrixAValues[i] != high) {
+                                equals = false;
+                                break;
+                            }
+
+                            j += 1;
+                        } else {
+                            if (matrixAValues[i] != this->low) {
+                                equals = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    return equals;
+                }
+            }
+
+            return false;
         }
 
         U *getValues() const {

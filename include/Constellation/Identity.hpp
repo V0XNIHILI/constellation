@@ -5,6 +5,8 @@
 #ifndef CONSTELLATION_IDENTITY_HPP
 #define CONSTELLATION_IDENTITY_HPP
 
+#include <iostream>
+
 #include "Scalar.hpp"
 
 namespace Constellation {
@@ -21,9 +23,11 @@ namespace Constellation {
          * @return Matrix
          */
         Identity<U> operator*(Identity<U> const &a) const {
-            checkDimensionCompatibility(a);
-
-            return Identity<U>(this->width);
+            if (a.getWidth() == this->height && a.getWidth() == this->width) {
+                return Identity<U>(this->width);
+            } else {
+                throw std::invalid_argument("Dimensions of identity matrices to be multiplied are not corresponding");
+            }
         }
     };
 }

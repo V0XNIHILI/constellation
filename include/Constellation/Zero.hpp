@@ -43,7 +43,7 @@ namespace Constellation {
         Scalar<U> operator+(Scalar<U> const &a) const {
             this->checkDimensionCompatibility(a, "added");
 
-            return Scalar<U>(a.high);
+            return Scalar<U>(a.getValueAlongDiagonal());
         }
 
         bool operator==(Matrix<U> const &a) const {
