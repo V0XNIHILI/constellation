@@ -47,6 +47,20 @@ TEST (OperatorTests, ValueAddition
     EXPECT_EQ (c, a + -3);
 }
 
+TEST (OperatorTests, MatrixAddition
+) {
+    int aValues[4] = {16, 2, 77, 40};
+    int bValues[4] = {19, 5, 80, 43};
+    int cValues[4] = {35, 7, 157, 83};
+
+    Constellation::Matrix<int> a(2, 2, aValues);
+    Constellation::Matrix<int> b(2, 2, bValues);
+    Constellation::Matrix<int> c(2, 2, cValues);
+
+    // Check regular matrix addition
+    EXPECT_EQ (c, a + b);
+}
+
 TEST (MethodTests, DotProduct
 ) {
     int aValues[4] = {16, 2, 77, 40};
