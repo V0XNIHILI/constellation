@@ -48,6 +48,8 @@ set(CONSTELLATION_HEADERS_DIR
 
 set(CONSTELLATION_HEADERS
         ${CONSTELLATION_HEADERS_DIR}/Matrix.hpp
+
+        ${CONSTELLATION_HEADERS_DIR}/Trigonometry/Trigonometry.hpp
         )
 
 set(CONSTELLATION_SOURCE_DIR
@@ -68,6 +70,8 @@ set(CONSTELLATION_SOURCE
 
         ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/SIMD/Float32Subtraction.cpp
         ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/SIMD/Int32Subtraction.cpp
+
+        ${CONSTELLATION_SOURCE_DIR}/Trigonometry/Trigonometry.cpp
         )
 
 project(${CONSTELLATION_PROJECT_NAME})

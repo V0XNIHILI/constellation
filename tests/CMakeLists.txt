@@ -14,8 +14,9 @@ set(CONSTELLATION_TESTS_NAME
         )
 
 set(CONSTELLATION_TESTS_SOURCE
-        MatrixTests.cpp
         DiagonalTests.cpp
+        IdentityTests.cpp
+        MatrixTests.cpp
         ZeroTests.cpp
         )
 
