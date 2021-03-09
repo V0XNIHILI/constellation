@@ -33,7 +33,6 @@ namespace Constellation {
                 jTimesWidth[j] = j * width;
             }
 
-            //            std::for_each(std::execution::par_unseq, 0, matrixAWidth, [&](int i) {
             for (int i = 0; i < matrixAWidth; i++) {
                 for (int j = 0; j < height; j++) {
                     int locationInNewMatrix = j * matrixAWidth + i;
@@ -42,7 +41,6 @@ namespace Constellation {
 
                     multipliedMatrixValues[locationInNewMatrix] = 0;
 
-                    // j, i =============> j, k =>>>>>>>>>> k , i
                     for (int k = 0; k < matrixAHeight; k++) {
                         // Updating the value in the matrix is faster than summing and then setting the value in the matrix to the sum (about 7% faster)
                         multipliedMatrixValues[locationInNewMatrix] +=
@@ -50,7 +48,6 @@ namespace Constellation {
                     }
                 }
             }
-            //            });
 
             Matrix<U> c(matrixAWidth, height, multipliedMatrixValues, true);
 
