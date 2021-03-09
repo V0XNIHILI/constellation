@@ -2,10 +2,11 @@
 // Created by Douwe den Blanken on 06/02/2021.
 //
 
-// If the code is compiled with AVX2
 #ifdef __AVX2__
 
 #include <immintrin.h>
+
+#include <Constellation/Matrix.hpp>
 
 namespace Constellation
 {

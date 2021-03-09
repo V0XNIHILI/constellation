@@ -2,6 +2,11 @@
 // Created by Douwe den Blanken on 08/02/2021.
 //
 
+#ifndef CONSTELLATION_VALUEMULTIPLICATION_HPP
+#define CONSTELLATION_VALUEMULTIPLICATION_HPP
+
+#include "../../Matrix.hpp"
+
 namespace Constellation
 {
     template <typename U>
@@ -19,3 +24,5 @@ namespace Constellation
         return c;
     }
 }; // namespace Constellation
+
+#endif //CONSTELLATION_VALUEMULTIPLICATION_HPP

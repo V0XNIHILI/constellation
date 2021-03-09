@@ -2,6 +2,11 @@
 // Created by Douwe den Blanken on 08/02/2021.
 //
 
+#ifndef CONSTELLATION_MATRIXDIVISION_HPP
+#define CONSTELLATION_MATRIXDIVISION_HPP
+
+#include "../../Matrix.hpp"
+
 namespace Constellation {
     template<typename U>
     Matrix <U> Matrix<U>::operator/(Matrix <U> const &a) const {
@@ -21,3 +26,5 @@ namespace Constellation {
 
     }
 }; // namespace Constellation
+
+#endif //CONSTELLATION_MATRIXDIVISION_HPP

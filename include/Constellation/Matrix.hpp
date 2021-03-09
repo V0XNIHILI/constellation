@@ -5,8 +5,6 @@
 #ifndef CONSTELLATION_MATRIX_HPP
 #define CONSTELLATION_MATRIX_HPP
 
-#endif //CONSTELLATION_MATRIX_HPP
-
 #include <stdexcept>
 #include <string>
 #include <fstream>
@@ -71,7 +69,6 @@ namespace Constellation {
             }
         }
 
-    private:
         /**
          * @brief Throws an error when either the widths or the heights of two matrices do not match
          *
@@ -190,6 +187,30 @@ namespace Constellation {
         Matrix<U> operator/(U const &a) const;
 
         /**
+         * @brief Divide the matrix by a another matrix
+         *
+         * @param a Matrix to divide the matrix by
+         * @return Matrix
+         */
+        Matrix<U> operator/(Matrix <U> const &a) const;
+
+        /**
+         * @brief Calculate a certain power of the matrix
+         *
+         * @param a Power that should be calculated
+         * @return Matrix
+         */
+        Matrix<U> operator^(int const &a) const;
+
+        /**
+         * @brief Multiply two matrices entrywise/elementwise (calculate the Hadamard product)
+         *
+         * @param a Matrix to perform elementwise multiplication with
+         * @return Matrix
+         */
+        Matrix<U> entryWise(Matrix<U> const &a) const;
+
+        /**
          * @brief Calculate the dot product of two matrices
          *
          * @param a Matrix using which the dot product should be calculated
@@ -278,6 +299,7 @@ namespace Constellation {
          * @brief Save the values in the matrix into a CSV file
          *
          * @todo Add binary export for smaller outfiles
+         * @todo Add error handling
          *
          * @param fileName Name of the file in which the values should be saved
          */
@@ -298,7 +320,6 @@ namespace Constellation {
 
             file.close();
         }
-        // friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &a);
     };
 
     template<typename U>
@@ -317,3 +338,17 @@ namespace Constellation {
         return os;
     }
 } // namespace Constellation
+
+#include "Arithmetic/Addition/ValueAddition.hpp"
+#include "Arithmetic/Addition/MatrixAddition.hpp"
+
+#include "Arithmetic/Division/ValueDivision.hpp"
+#include "Arithmetic/Division/MatrixDivision.hpp"
+
+#include "Arithmetic/Multiplication/ValueMultiplication.hpp"
+#include "Arithmetic/Multiplication/MatrixMultiplication.hpp"
+
+#include "Arithmetic/Subtraction/ValueSubtraction.hpp"
+#include "Arithmetic/Subtraction/MatrixSubtraction.hpp"
+
+#endif //CONSTELLATION_MATRIX_HPP

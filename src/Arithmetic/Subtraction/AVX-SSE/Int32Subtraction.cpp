@@ -7,10 +7,12 @@
 
 #include <immintrin.h>
 
+#include <Constellation/Matrix.hpp>
+
 namespace Constellation
 {
     template<>
-    Matrix<int> Matrix<int>::operator*(int const &a) const {
+    Matrix<int> Matrix<int>::operator-(int const &a) const {
         int *summedMatrixValues = new int[size];
 
         const int amountAVX = size - size % 8;
@@ -22,7 +24,7 @@ namespace Constellation
             for (int i = 0; i < amountAVX; i += 8) {
                 __m256i second = _mm256_load_si256((__m256i * ) & values[i]);
 
-                __m256i result = _mm256_mul_epi32(second, firstAVX);
+                __m256i result = _mm256_sub_epi32(second, firstAVX);
 
                 _mm256_store_si256((__m256i * ) & summedMatrixValues[i], result);
             }
@@ -37,14 +39,14 @@ namespace Constellation
             for(int i = amountAVX; i < amountSSE; i += 4) {
                 __m128i second = _mm_load_si128((__m128i * ) & values[i]);
 
-                __m128i result = _mm_mul_epi32(second, firstSSE);
+                __m128i result = _mm_sub_epi32(second, firstSSE);
 
                 _mm_store_si128((__m128i * ) & summedMatrixValues[i], result);
             }
         }
 
         for (int i = amountSSE; i < size; i++) {
-            summedMatrixValues[i] = values[i] * a;
+            summedMatrixValues[i] = values[i] - a;
         }
 
         Matrix<int> c(width, height, summedMatrixValues, true);

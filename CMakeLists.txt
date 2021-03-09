@@ -32,13 +32,10 @@
 
 cmake_minimum_required(VERSION 3.0)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 enable_testing()
 
 set(CONSTELLATION_PROJECT_NAME
-        "CONSTELLATION_PROJECT"
+        "CONSTELLATION"
         )
 
 set(CONSTELLATION_LIBRARY_NAME
@@ -51,13 +48,6 @@ set(CONSTELLATION_HEADERS_DIR
 
 set(CONSTELLATION_HEADERS
         ${CONSTELLATION_HEADERS_DIR}/Matrix.hpp
-
-#        ${CONSTELLATION_HEADERS_DIR}/Model.h
-#        ${CONSTELLATION_HEADERS_DIR}/StateTransitionProbabilityDistributionMatrix.h
-#        ${CONSTELLATION_HEADERS_DIR}/StateEmissionProbabilityDistributionMatrix.h
-#        ${CONSTELLATION_HEADERS_DIR}/InitialStateProbabilityDistribution.h
-#
-#        ${CONSTELLATION_HEADERS_DIR}/BaumWelchAlgorithm.h
         )
 
 set(CONSTELLATION_SOURCE_DIR
@@ -67,15 +57,22 @@ set(CONSTELLATION_SOURCE_DIR
 set(CONSTELLATION_SOURCE
         ${CONSTELLATION_SOURCE_DIR}/Matrix.cpp
 
-#        ${CONSTELLATION_SOURCE_DIR}/Model.cpp
-#        ${CONSTELLATION_SOURCE_DIR}/StateTransitionProbabilityDistributionMatrix.cpp
-#        ${CONSTELLATION_SOURCE_DIR}/StateEmissionProbabilityDistributionMatrix.cpp
-#        ${CONSTELLATION_SOURCE_DIR}/InitialStateProbabilityDistribution.cpp
-#
-#        ${CONSTELLATION_SOURCE_DIR}/BaumWelchAlgorithm.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Addition/AVX-SSE/Float32Addition.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Addition/AVX-SSE/Int32Addition.cpp
+
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Division/AVX-SSE/Float32Division.cpp
+
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Multiplication/AVX-SSE/Float32Multiplication.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Multiplication/AVX-SSE/Int32Multiplication.cpp
+
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/AVX-SSE/Float32Subtraction.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/AVX-SSE/Int32Subtraction.cpp
         )
 
 project(${CONSTELLATION_PROJECT_NAME})
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${CONSTELLATION_LIBRARY_NAME} STATIC
         ${CONSTELLATION_HEADERS}
