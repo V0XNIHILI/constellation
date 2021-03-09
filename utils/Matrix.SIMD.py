@@ -136,16 +136,16 @@ int32_name = 'Int32'
 float32_name = 'Float32'
 file_extenston = ".hpp"
 
-addition_path = "Addition/AVX-SSE/"
+addition_path = "Addition/SIMD/"
 addition_suffix = "Addition" + file_extenston
 
-division_path = "Division/AVX-SSE/"
+division_path = "Division/SIMD/"
 division_suffix = "Division" + file_extenston
 
-subtraction_path = "Subtraction/AVX-SSE/"
+subtraction_path = "Subtraction/SIMD/"
 subtraction_suffix = "Subtraction" + file_extenston
 
-multiplication_path = "Multiplication/AVX-SSE/"
+multiplication_path = "Multiplication/SIMD/"
 multiplication_suffix = "Multiplication" + file_extenston
 
 # -------------------------------------------------------------------------------------------------

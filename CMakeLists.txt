@@ -56,17 +56,18 @@ set(CONSTELLATION_SOURCE_DIR
 
 set(CONSTELLATION_SOURCE
         ${CONSTELLATION_SOURCE_DIR}/Matrix.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Identity.cpp
 
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Addition/AVX-SSE/Float32Addition.cpp
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Addition/AVX-SSE/Int32Addition.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Addition/SIMD/Float32Addition.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Addition/SIMD/Int32Addition.cpp
 
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Division/AVX-SSE/Float32Division.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Division/SIMD/Float32Division.cpp
 
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Multiplication/AVX-SSE/Float32Multiplication.cpp
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Multiplication/AVX-SSE/Int32Multiplication.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Multiplication/SIMD/Float32Multiplication.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Multiplication/SIMD/Int32Multiplication.cpp
 
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/AVX-SSE/Float32Subtraction.cpp
-        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/AVX-SSE/Int32Subtraction.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/SIMD/Float32Subtraction.cpp
+        ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/SIMD/Int32Subtraction.cpp
         )
 
 project(${CONSTELLATION_PROJECT_NAME})

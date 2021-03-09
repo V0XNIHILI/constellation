@@ -15,6 +15,8 @@ set(CONSTELLATION_TESTS_NAME
 
 set(CONSTELLATION_TESTS_SOURCE
         MatrixTests.cpp
+        DiagonalTests.cpp
+        ZeroTests.cpp
         )
 
 add_executable(${CONSTELLATION_TESTS_NAME} ${CONSTELLATION_TESTS_SOURCE})
