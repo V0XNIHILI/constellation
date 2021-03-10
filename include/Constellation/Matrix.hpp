@@ -130,6 +130,10 @@ namespace Constellation {
             return false;
         }
 
+        bool operator!=(Matrix<U> const &a) const {
+            return !operator==(a);
+        }
+
         /**
          * @brief Add two matrices
          *
@@ -293,7 +297,7 @@ namespace Constellation {
         }
 
         /**
-         * Returns the values of the matrix in an 1D array
+         * @brief Returns the values of the matrix in an 1D array
          *
          * @return U
          */
@@ -302,14 +306,32 @@ namespace Constellation {
         }
 
         /**
+         * @brief Set the value of the matrix at a given x, y position
+         *
+         * @param x Horizontal coordinate (0 indexed)
+         * @param y Vertical coordinate (0 indexed)
+         *
+         * @return U&
+         */
+        U& operator()(int x, int y) {
+            if (x >= width)
+                throw std::invalid_argument("Provided x coordinate is not in matrix");
+
+            if (y >= height)
+                throw std::invalid_argument("Provided y coordinate is not in matrix");
+
+            return values[width * y + x];
+        }
+
+        /**
          * @brief Returns the value in the matrix at the provided coordinates
          *
-         * @param x horizontal coordinate (0 indexed)
-         * @param y vertical coordinate (0 indexed)
+         * @param x Horizontal coordinate (0 indexed)
+         * @param y Vertical coordinate (0 indexed)
          *
          * @return U
          */
-        U operator()(int &x, int &y) const {
+        U operator()(int x, int y) const {
             if (x >= width)
                 throw std::invalid_argument("Provided x coordinate is not in matrix");
 
