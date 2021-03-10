@@ -2,10 +2,6 @@
 // Created by Douwe den Blanken on 09/03/2021.
 //
 
-//
-// Created by Douwe den Blanken on 09/03/2021.
-//
-
 #include <gtest/gtest.h>
 
 #include <Constellation/Zero.hpp>
