@@ -9,41 +9,41 @@
 namespace Constellation {
     namespace Trigonometry {
         template<>
-        Matrix<double> sin(Matrix<double> const &a) {
-            double *matrixAValues = a.getValues();
+        Matrix<float> sin(Matrix<float> const &a) {
+            float *matrixAValues = a.getValues();
 
             int aWidth = a.getWidth();
             int aHeight = a.getHeight();
 
             int matrixSize = aWidth * aHeight;
 
-            double *sinMatrixValues = new double[matrixSize];
+            float *sinMatrixValues = new float[matrixSize];
 
             for (int i = 0; i < matrixSize; i++) {
                 sinMatrixValues[i] = std::sin(matrixAValues[i]);
             }
 
-            Matrix<double> c(aHeight, aWidth, sinMatrixValues);
+            Matrix<float> c(aHeight, aWidth, sinMatrixValues);
 
             return c;
         }
 
         template<>
-        Matrix<double> cos(Matrix<double> const &a) {
-            double *matrixAValues = a.getValues();
+        Matrix<float> cos(Matrix<float> const &a) {
+            float *matrixAValues = a.getValues();
 
             int aWidth = a.getWidth();
             int aHeight = a.getHeight();
 
             int matrixSize = aWidth * aHeight;
 
-            double *cosMatrixValues = new double[matrixSize];
+            float *cosMatrixValues = new float[matrixSize];
 
             for (int i = 0; i < matrixSize; i++) {
                 cosMatrixValues[i] = std::cos(matrixAValues[i]);
             }
 
-            Matrix<double> c(aHeight, aWidth, cosMatrixValues);
+            Matrix<float> c(aHeight, aWidth, cosMatrixValues);
 
             return c;
         }
