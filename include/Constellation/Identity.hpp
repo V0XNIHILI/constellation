@@ -5,7 +5,7 @@
 #ifndef CONSTELLATION_IDENTITY_HPP
 #define CONSTELLATION_IDENTITY_HPP
 
-#include <iostream>
+#include <stdexcept>
 
 #include "Scalar.hpp"
 
