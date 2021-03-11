@@ -5,9 +5,15 @@ Linear algebra library for C++.
 ## Description
 
 The library has support for the AVX/SSE instruction set and is, in its current form, made to
-resemble real world mathematics. For example, multiplying an identity matrix by a value, leads to a
-scalar matrix. Or, when a zero matrix is added to a scalar matrix, the same scalar matrix is
-returned.
+resemble real world mathematics. For example, multiplying an identity matrix (class = `Identity`) by a value, leads to a
+scalar matrix (class = `Scalar`). Or, when a zero matrix (class = `Zero`) is added to a scalar matrix, the same scalar matrix is
+returned. Furthermore, for special matrix types, such as a zero or identity matrix, the amount of space needed in memory to use them is independent of their size.
+
+Constellation makes extensive of C++ templates allowing you to make binary as well as floating point matrices with the same ease.
+
+## Coverage/tests
+
+Tests are written using [Google's GoogleTest](https://github.com/google/googletest); the tests cover some of the basic properties and operations for the various types of matrices. 
 
 ## What's next
 
