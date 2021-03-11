@@ -1,6 +1,6 @@
 # Constellation
 
-High performance linear algebra library for C++.
+Linear algebra library for C++.
 
 ## Description
 
