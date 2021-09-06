@@ -15,6 +15,9 @@ TEST (ConstructionTests, Matrix
     EXPECT_THROW(Constellation::Matrix<int>(-2, 2, aValues), std::invalid_argument);
     EXPECT_THROW(Constellation::Matrix<int>(2, -2, aValues), std::invalid_argument);
     EXPECT_THROW(Constellation::Matrix<int>(-2, -2, aValues), std::invalid_argument);
+    EXPECT_THROW(Constellation::Matrix<int>(0, 2, aValues), std::invalid_argument);
+    EXPECT_THROW(Constellation::Matrix<int>(2, 0, aValues), std::invalid_argument);
+    EXPECT_THROW(Constellation::Matrix<int>(0, 0, aValues), std::invalid_argument);
 }
 
 TEST (OperatorTests, Equals
@@ -58,6 +61,23 @@ TEST (OperatorTests, ValueAddition
     EXPECT_EQ (c, a + -3);
 }
 
+TEST (OperatorTests, ValueSubtraction
+) {
+    int aValues[4] = {16, 2, 77, 40};
+    int bValues[4] = {19, 5, 80, 43};
+    int cValues[4] = {13, -1, 74, 37};
+
+    Constellation::Matrix<int> a(2, 2, aValues);
+    Constellation::Matrix<int> b(2, 2, bValues);
+    Constellation::Matrix<int> c(2, 2, cValues);
+
+    // Check positive addition
+    EXPECT_EQ (c, a - 3);
+
+    // Test negative addition
+    EXPECT_EQ (b, a - -3);
+}
+
 TEST (OperatorTests, MatrixAddition
 ) {
     int aValues[4] = {16, 2, 77, 40};
@@ -97,7 +117,7 @@ TEST (MethodTests, DotProduct
     EXPECT_EQ (7791, a.dot(b));
 }
 
-TEST (MethodTests, TranposeTest
+TEST (MethodTests, TransposeTest
 ) {
     int aValues[4] = {16, 2, 77, 40};
     int bValues[4] = {16, 77, 2, 40};
@@ -108,19 +128,15 @@ TEST (MethodTests, TranposeTest
     EXPECT_EQ (b, a.T());
 }
 
-TEST (MethodTests, Replace
+TEST (MethodTests, Set
 ) {
     int aValues[4] = {16, 2, 77, 40};
-    int bValues[4] = {16, 2, -1, -1};
-    int cValues[4] = {16, 2, 33, 33};
+    int bValues[4] = {16, 2, 3, 3};
 
     Constellation::Matrix<int> a(2, 2, aValues);
     Constellation::Matrix<int> b(2, 2, bValues);
-    Constellation::Matrix<int> c(2, 2, cValues);
 
-    EXPECT_EQ (b, a.replace('>', 20, -1));
-    EXPECT_EQ (b, c.replace('=', 33, -1));
-    EXPECT_EQ (c, b.replace('<', 0, 33));
+    EXPECT_EQ (b, a.set(a >= 40, 3));
 }
 
 TEST (MethodTests, EntryWiseMultiplication
