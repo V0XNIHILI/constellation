@@ -1,8 +1,9 @@
 //
-// Created by Douwe den Blanken on 09/03/2021.
+// Created by Douwe den Blanken on 06/02/2021.
 //
 
-#ifdef __AVX2__
+// If the code is compiled with AVX2
+#if defined __AVX2__ && defined __AVX__
 
 #include <immintrin.h>
 
@@ -21,11 +22,11 @@ namespace Constellation
             const __m256 firstAVX = _mm256_set1_ps(a);
 
             for (int i = 0; i < amountAVX; i += 8) {
-                __m256 second = _mm256_load_ps(values[i]);
+                __m256 second = _mm256_load_ps(&values[i]);
 
                 __m256 result = _mm256_add_ps(second, firstAVX);
 
-                _mm256_store_ps((__m256 * ) & summedMatrixValues[i], result);
+                _mm256_store_ps(& summedMatrixValues[i], result);
             }
         }
 
@@ -36,11 +37,11 @@ namespace Constellation
             const __m128 firstSSE = _mm_set_ps1(a);
 
             for(int i = amountAVX; i < amountSSE; i += 4) {
-                __m128 second = _mm_load_ps((__m128 * ) & values[i]);
+                __m128 second = _mm_load_ps(& values[i]);
 
                 __m128 result = _mm_add_ps(second, firstSSE);
 
-                _mm_store_ps((__m128 * ) & summedMatrixValues[i], result);
+                _mm_store_ps(& summedMatrixValues[i], result);
             }
         }
 

@@ -3,7 +3,7 @@
 //
 
 // If the code is compiled with AVX2
-#ifdef __AVX2__
+#if defined __AVX2__ && defined __AVX__
 
 #include <immintrin.h>
 
@@ -22,11 +22,11 @@ namespace Constellation
             const __m256i firstAVX = _mm256_set1_epi32(a);
 
             for (int i = 0; i < amountAVX; i += 8) {
-                __m256i second = _mm256_load_si256((__m256i * ) & values[i]);
+                __m256i second = _mm256_load_si256((__m256i * )&values[i]);
 
                 __m256i result = _mm256_mul_epi32(second, firstAVX);
 
-                _mm256_store_si256((__m256i * ) & summedMatrixValues[i], result);
+                _mm256_store_si256((__m256i * )& summedMatrixValues[i], result);
             }
         }
 
@@ -37,11 +37,11 @@ namespace Constellation
             const __m128i firstSSE = _mm_set1_epi32(a);
 
             for(int i = amountAVX; i < amountSSE; i += 4) {
-                __m128i second = _mm_load_si128((__m128i * ) & values[i]);
+                __m128i second = _mm_load_si128((__m128i * )& values[i]);
 
                 __m128i result = _mm_mul_epi32(second, firstSSE);
 
-                _mm_store_si128((__m128i * ) & summedMatrixValues[i], result);
+                _mm_store_si128((__m128i * )& summedMatrixValues[i], result);
             }
         }
 
