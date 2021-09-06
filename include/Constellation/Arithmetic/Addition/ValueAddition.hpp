@@ -10,10 +10,15 @@
 namespace Constellation {
     template<typename U>
     Matrix <U> Matrix<U>::operator+(U const &a) const {
+//        if (a == U()) {
+//            Matrix<U> c(width, height, values, false);
+//
+//            return c;
+//        }
+
         U *summedMatrixValues = new U[size];
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             summedMatrixValues[i] = values[i] + a;
         }
 
