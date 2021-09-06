@@ -1,62 +1,30 @@
-## cmake version to be used
-#cmake_minimum_required( VERSION 3.0 )
-#
-## project name
-#project( constellation )
-#
-## cpp version
-#
-#set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#
-## flags
-#if (UNIX)
-#    set(CMAKE_CXX_FLAGS "-Ofast -march=native -flto -fomit-frame-pointer -mavx2 -fno-tree-vectorize")
-#endif (UNIX)
-#
-## files
-#
-## include
-#include_directories( ./include ./src )
-#
-## target
-#add_executable( binary ./src/main.cpp )
-#
-## tests
-##enable_testing()
-#add_executable(all_tests tests/main.cpp)
-#set(INSTALL_GTEST OFF)
-#add_subdirectory(libs/googletest)
-#target_link_libraries(all_tests gtest gtest_main)
-##add_test( all_tests all_tests )
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
-cmake_minimum_required(VERSION 3.0)
-
-enable_testing()
-
+# Set up project
 set(CONSTELLATION_PROJECT_NAME
         "CONSTELLATION"
         )
 
+project(${CONSTELLATION_PROJECT_NAME} VERSION 0.1
+                                      DESCRIPTION "Linear algebra package in C++"
+                                      LANGUAGES CXX)
+
+# Specify the C++ standards
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Set library name
 set(CONSTELLATION_LIBRARY_NAME
         "Constellation"
         )
 
-set(CONSTELLATION_HEADERS_DIR
-        include/${CONSTELLATION_LIBRARY_NAME}
-        )
-
-set(CONSTELLATION_HEADERS
-        ${CONSTELLATION_HEADERS_DIR}/Matrix.hpp
-
-        ${CONSTELLATION_HEADERS_DIR}/Trigonometry/Trigonometry.hpp
-        )
-
+# Set all source file paths
 set(CONSTELLATION_SOURCE_DIR
         src
         )
 
-set(CONSTELLATION_SOURCE
+set(CONSTELLATION_SOURCES
         ${CONSTELLATION_SOURCE_DIR}/Matrix.cpp
         ${CONSTELLATION_SOURCE_DIR}/Identity.cpp
 
@@ -74,16 +42,13 @@ set(CONSTELLATION_SOURCE
         ${CONSTELLATION_SOURCE_DIR}/Trigonometry/Trigonometry.cpp
         )
 
-project(${CONSTELLATION_PROJECT_NAME})
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 add_library(${CONSTELLATION_LIBRARY_NAME} STATIC
-        ${CONSTELLATION_HEADERS}
-        ${CONSTELLATION_SOURCE}
+        #        ${CONSTELLATION_HEADERS}
+        ${CONSTELLATION_SOURCES}
         )
 
+# Make sure that we have private headers like "#include Abc.hpp" and public headers like "#include
+# <LibName/Abc.hpp>" (see: https://medium.com/swlh/c-project-structure-for-cmake-67d60135f6f5)
 target_include_directories(${CONSTELLATION_LIBRARY_NAME} PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${CONSTELLATION_LIBRARY_NAME}>
         $<INSTALL_INTERFACE:include/${CONSTELLATION_LIBRARY_NAME}>
@@ -94,9 +59,17 @@ target_include_directories(${CONSTELLATION_LIBRARY_NAME} PUBLIC
         $<INSTALL_INTERFACE:include>
         )
 
-if (NOT ((TARGET gtest) AND (TARGET gtest_main)))
-    add_subdirectory(libs/googletest)
-    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-endif ()
+target_compile_options(${CONSTELLATION_LIBRARY_NAME} PRIVATE "-mavx" "-mavx2")
+
+# GTest
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.11.0
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 add_subdirectory(tests)
