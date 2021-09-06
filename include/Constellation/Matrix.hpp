@@ -75,7 +75,8 @@ namespace Constellation {
          * @param a Matrix to be checked against
          * @param verb Word that will be added in the error message. Can be 'added' or 'divided' etc.
          */
-        void checkDimensionCompatibility(Matrix<U> const &a, std::string verb) const {
+        template<typename V>
+        void checkDimensionCompatibility(Matrix<V> const &a, std::string verb) const {
             if (a.getWidth() != width)
                 throw std::invalid_argument("Widths of matrices to be " + verb + " do not match");
             else if (a.getHeight() != height)
@@ -133,6 +134,54 @@ namespace Constellation {
         bool operator!=(Matrix<U> const &a) const {
             return !operator==(a);
         }
+
+        /**
+         * @brief Check per matrix value whether it is larger than or equal to the passed value
+         *
+         * @param a Value to compare with
+         * @return Matrix<bool>
+         */
+        Matrix<bool> operator>=(const U &a) const;
+
+        /**
+         * @brief Check per matrix value whether it is larger than to the passed value
+         *
+         * @param a Value to compare with
+         * @return Matrix<bool>
+         */
+        Matrix<bool> operator>(const U &a) const;
+
+        /**
+        * @brief Check per matrix value whether it is smaller than the passed value
+        *
+        * @param a Value to compare with
+        * @return Matrix<bool>
+        */
+        Matrix<bool> operator<(const U &a) const;
+
+        /**
+         * @brief Check per matrix value whether it is smaller than or equal to the passed value
+         *
+         * @param a Value to compare with
+         * @return Matrix<bool>
+         */
+        Matrix<bool> operator<=(const U &a) const;
+
+        /**
+        * @brief Check per matrix value whether it is not equal to the passed value
+        *
+        * @param a Value to compare with
+        * @return Matrix<bool>
+        */
+        Matrix<bool> operator!=(const U &a) const;
+
+        /**
+         * @brief Check per matrix value whether it is equal to the passed value
+         *
+         * @param a Value to compare with
+         * @return Matrix<bool>
+         */
+        Matrix<bool> operator==(const U &a) const;
 
         /**
          * @brief Add two matrices
@@ -254,30 +303,6 @@ namespace Constellation {
             return c;
         }
 
-        Matrix<U> replace(char where, U value, U with) const {
-            U *replacedMatrixValues = new U[size];
-
-            if (where == '>') {
-                for (int i = 0; i < size; i++) {
-                    replacedMatrixValues[i] = values[i] > value ? with : values[i];
-                }
-            } else if (where == '=') {
-                for (int i = 0; i < size; i++) {
-                    replacedMatrixValues[i] = values[i] == value ? with : values[i];
-                }
-            } else if (where == '<') {
-                for (int i = 0; i < size; i++) {
-                    replacedMatrixValues[i] = values[i] < value ? with : values[i];
-                }
-            } else {
-                throw std::invalid_argument("The supplied 'where' is not >, = or <");
-            }
-
-            Matrix c(height, width, replacedMatrixValues, true);
-
-            return c;
-        }
-
         /**
          * Returns the width of the matrix
          *
@@ -313,14 +338,30 @@ namespace Constellation {
          *
          * @return U&
          */
-        U& operator()(int x, int y) {
-            if (x >= width)
+        U &operator()(int &x, int &y) {
+            if (x >= width || x < 0)
                 throw std::invalid_argument("Provided x coordinate is not in matrix");
 
-            if (y >= height)
+            if (y >= height || y < 0)
                 throw std::invalid_argument("Provided y coordinate is not in matrix");
 
             return values[width * y + x];
+        }
+
+        Matrix<U> set(Matrix<bool> const &where, U const &to) const {
+            checkDimensionCompatibility(where, "set");
+
+            U *setMatrixValues = new U[size];
+
+            bool *matrixWhereValues = where.getValues();
+
+            for (int i = 0; i < size; i++) {
+                setMatrixValues[i] = matrixWhereValues[i] == true ? to : values[i];
+            }
+
+            Matrix<U> c(width, height, setMatrixValues, true);
+
+            return c;
         }
 
         /**
@@ -331,11 +372,11 @@ namespace Constellation {
          *
          * @return U
          */
-        U operator()(int x, int y) const {
-            if (x >= width)
+        U operator()(int &x, int &y) const {
+            if (x >= width || x < 0)
                 throw std::invalid_argument("Provided x coordinate is not in matrix");
 
-            if (y >= height)
+            if (y >= height|| y < 0)
                 throw std::invalid_argument("Provided y coordinate is not in matrix");
 
             return values[width * y + x];
@@ -372,11 +413,11 @@ namespace Constellation {
     std::ostream &operator<<(std::ostream &os, const Matrix<U> &a) {
         os << "[ ";
 
-        for (size_t i = a.getWidth() * a.getHeight(); i--;) {
-            if ((a.getWidth() * a.getHeight() - 1 - i) % a.getWidth() == 0)
-                os << "\n";
+        for (int i = 0; i < a.getWidth() * a.getHeight(); i++) {
+            if (i != 0 && i % a.getWidth() == 0)
+                os << "\n  ";
 
-            os << a.getValues()[a.getWidth() * a.getHeight() - 1 - i] << " ";
+            os << a.getValues()[i] << " ";
         }
 
         os << "]" << std::endl;
@@ -399,5 +440,7 @@ namespace Constellation {
 #include "Arithmetic/Subtraction/MatrixSubtraction.hpp"
 
 #include "Arithmetic/EntryWiseMultiplication.hpp"
+
+#include "Comparison/Comparison.hpp"
 
 #endif //CONSTELLATION_MATRIX_HPP
