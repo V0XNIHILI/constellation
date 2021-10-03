@@ -64,9 +64,11 @@ matrix_operation = """//
 //
 
 // If the code is compiled with AVX2
-#ifdef __AVX2__
+#if defined __AVX2__ && defined __AVX__
 
 #include <immintrin.h>
+
+#include <Constellation/Matrix.hpp>
 
 namespace Constellation
 {
@@ -81,11 +83,11 @@ namespace Constellation
             const typeAVX firstAVX = set1AVX(a);
 
             for (int i = 0; i < amountAVX; i += 8) {
-                typeAVX second = loadAVX((typeAVX * ) & values[i]);
+                typeAVX second = loadAVX(&values[i]);
 
                 typeAVX result = addAVX(second, firstAVX);
 
-                storeAVX((typeAVX * ) & summedMatrixValues[i], result);
+                storeAVX(& summedMatrixValues[i], result);
             }
         }
 
@@ -96,11 +98,11 @@ namespace Constellation
             const typeSSE firstSSE = set1SSE(a);
 
             for(int i = amountAVX; i < amountSSE; i += 4) {
-                typeSSE second = loadSSE((typeSSE * ) & values[i]);
+                typeSSE second = loadSSE(& values[i]);
 
                 typeSSE result = addSSE(second, firstSSE);
 
-                storeSSE((typeSSE * ) & summedMatrixValues[i], result);
+                storeSSE(& summedMatrixValues[i], result);
             }
         }
 
@@ -130,11 +132,11 @@ float32_multiplication = update_addition_for_multiplication(float32_addition)
 
 # -------------------------------------------------------------------------------------------------
 
-avx_sse_path = "include/Constellation/Arithmetic/"
+avx_sse_path = "src/Arithmetic/"
 
 int32_name = 'Int32'
 float32_name = 'Float32'
-file_extenston = ".hpp"
+file_extenston = ".cpp"
 
 addition_path = "Addition/SIMD/"
 addition_suffix = "Addition" + file_extenston
