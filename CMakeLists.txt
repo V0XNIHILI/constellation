@@ -38,12 +38,9 @@ set(CONSTELLATION_SOURCES
 
         ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/SIMD/Float32Subtraction.cpp
         ${CONSTELLATION_SOURCE_DIR}/Arithmetic/Subtraction/SIMD/Int32Subtraction.cpp
-
-        ${CONSTELLATION_SOURCE_DIR}/Trigonometry/Trigonometry.cpp
         )
 
 add_library(${CONSTELLATION_LIBRARY_NAME} STATIC
-        #        ${CONSTELLATION_HEADERS}
         ${CONSTELLATION_SOURCES}
         )
 
