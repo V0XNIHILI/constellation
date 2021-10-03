@@ -1,17 +1,54 @@
 //
-// Created by Douwe den Blanken on 10/03/2021.
+// Created by Douwe den Blanken on 09/03/2021.
 //
 
-#ifndef CONSTELLATION_REDUCTION_HPP
-#define CONSTELLATION_REDUCTION_HPP
+#ifndef CONSTELLATION_FUNCTIONS_HPP
+#define CONSTELLATION_FUNCTIONS_HPP
 
 #include <algorithm>
 #include <numeric>
+#include <cmath>
 
 #include "../Matrix.hpp"
 
 namespace Constellation {
-    namespace Reduction {
+    namespace Functions {
+        /**
+         * Calculate the cosine for each value in the matrix
+         *
+         * @tparam U Can only be double/float/long double
+         * @param a Matrix for which the value of sin should be calculated
+         * @return Matrix
+         */
+        template<typename U>
+        Matrix<U> sin(Matrix<U> const &a) {
+            return a.forEveryElement(std::sin);
+        }
+
+        /**
+         * Calculate the cosine for each value in the matrix
+         *
+         * @tparam U Can only be double/float/long double
+         * @param a Matrix for which the value of cos should be calculated
+         * @return Matrix
+         */
+        template<typename U>
+        Matrix<U> cos(Matrix<U> const &a) {
+            return a.forEveryElement(std::cos);
+        }
+
+        /**
+         * Calculate the exponential function for each value in the matrix
+         *
+         * @tparam U Can only be double/float/long double
+         * @param a Matrix for which the exponent should be calculated
+         * @return Matrix
+         */
+        template<typename U>
+        Matrix<U> exp(Matrix<U> const &a) {
+            return a.forEveryElement(std::exp);
+        }
+
         template<typename U>
         U min(Matrix<U> const &a) {
             U *matrixAValues = a.getValues();
@@ -70,4 +107,4 @@ namespace Constellation {
     }
 }
 
-#endif //CONSTELLATION_REDUCTION_HPP
+#endif //CONSTELLATION_FUNCTIONS_HPP

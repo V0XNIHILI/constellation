@@ -256,6 +256,25 @@ namespace Constellation {
         Matrix<U> operator^(int const &a) const;
 
         /**
+         * @brief Perform a certain function for every element of the matrix
+         *
+         * @param f Function to perform on every element
+         * @return Matrix
+         */
+        Matrix<U> forEveryElement(U (*f)(U)) const {
+            U *appliedMatrixValues = new U[size];
+
+            #pragma omp parallel for
+            for (int i = 0; i < size; i++) {
+                appliedMatrixValues[i] = f(values[i]);
+            }
+
+            Matrix<U> c(width, height, appliedMatrixValues, true);
+
+            return c;
+        }
+
+        /**
          * @brief Multiply two matrices entrywise/elementwise (calculate the Hadamard product)
          *
          * @param a Matrix to perform elementwise multiplication with
@@ -338,7 +357,7 @@ namespace Constellation {
          *
          * @return U&
          */
-        U &operator()(int &x, int &y) {
+        U &operator()(int x, int y) {
             if (x >= width || x < 0)
                 throw std::invalid_argument("Provided x coordinate is not in matrix");
 
@@ -381,6 +400,8 @@ namespace Constellation {
 
             return values[width * y + x];
         }
+
+        U& operator[] (Matrix<bool> a);
 
         /**
          * @brief Save the values in the matrix into a CSV file
