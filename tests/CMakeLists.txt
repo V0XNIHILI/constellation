@@ -10,7 +10,7 @@ set(CONSTELLATION_TESTS_SOURCE
         MatrixTests.cpp
         ZeroTests.cpp
 
-        Reduction/ReductionTests.cpp
+        Functions/FunctionTests.cpp
         )
 
 add_executable(${CONSTELLATION_TESTS_NAME} ${CONSTELLATION_TESTS_SOURCE})
