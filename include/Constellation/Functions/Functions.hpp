@@ -104,7 +104,21 @@ namespace Constellation {
         U avg(Matrix<U> const &a) {
             return sum(a) / (a.getHeight() * a.getWidth());
         }
-    }
+//
+//        template<typename U>
+//        U var(Matrix<U> const &a);
+//
+//
+//        template<typename U>
+//        U std(Matrix<U> const &a);
+//
+//        template<typename U>
+//        Matrix<U> sort(Matrix<U> const &a);
+//
+//
+//        template<typename U>
+//        std::array<U, 2> range(Matrix<U> const &a);
+        }
 }
 
 #endif //CONSTELLATION_FUNCTIONS_HPP
